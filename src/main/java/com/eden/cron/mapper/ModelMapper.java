@@ -23,7 +23,6 @@ public interface ModelMapper extends BaseMapper<Model, ModelVM> {
 
     @Mapping(target = "nickNames", source = "nickNames", qualifiedByName = "toNickNameModel")
     @Mapping(target = "deleted", ignore = true)
-    @Mapping(target = "active", ignore = true)
     Model toModel(ModelVM vm);
 
     @Named("toNickNameModel")
