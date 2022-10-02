@@ -9,14 +9,14 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@Entity
 public class Model extends BaseModel {
 
     private String name;
     private String nativeName;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "modelId")
-    private List<ModelNickName> nickNames;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "model")
+    private List<Nickname> nicks;
 }

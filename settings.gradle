@@ -1,7 +1,6 @@
 pluginManagement {
     repositories {
         maven { url 'https://repo.spring.io/milestone' }
-        maven { url 'https://repo.spring.io/snapshot' }
         maven {
             url = uri("https://maven.pkg.github.com/nvh-gel/registry")
             credentials {

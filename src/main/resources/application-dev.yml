@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://ec2-3-218-171-44.compute-1.amazonaws.com:5432/d7epg75am28quf
-    username: bdghqzwhutprxp
-    password: 5880b578fff1bf25343e9ee4631023096c9859c00c6b8d54acffd7e691b808c8
+    url: jdbc:postgresql://jelani.db.elephantsql.com:5432/gozuzqsr
+    username: gozuzqsr
+    password: aRKw9m4PrpNfnua0QuUH5CNulXBMl6ya
   jpa:
     hibernate:
       ddl-auto: update
