@@ -2,7 +2,9 @@ package com.eden.cron.controller;
 
 import com.eden.common.utils.ResponseModel;
 import com.eden.cron.service.ModelService;
+import com.eden.cron.service.NicknameService;
 import com.eden.cron.viewmodel.ModelVM;
+import com.eden.cron.viewmodel.NicknameVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 public class ModelController {
 
     private ModelService modelService;
+
+    private NicknameService nickNameService;
 
     @PostMapping
     public ResponseEntity<ResponseModel> createModel(@RequestBody ModelVM request) {
@@ -27,8 +31,26 @@ public class ModelController {
         return ResponseEntity.ok(ResponseModel.ok(modelService.findAllModels()));
     }
 
+    @PostMapping("/nick")
+    public ResponseEntity<ResponseModel> createNick(@RequestBody NicknameVM request) {
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(ResponseModel.created(nickNameService.createNick(request)));
+    }
+
+    @GetMapping("/nick")
+    public ResponseEntity<ResponseModel> getAllNicks() {
+
+        return ResponseEntity.ok(ResponseModel.ok(nickNameService.findAllNicks()));
+    }
+
     @Autowired
     public void setModelService(ModelService modelService) {
         this.modelService = modelService;
+    }
+
+    @Autowired
+    public void setNickNameService(NicknameService nickNameService) {
+        this.nickNameService = nickNameService;
     }
 }

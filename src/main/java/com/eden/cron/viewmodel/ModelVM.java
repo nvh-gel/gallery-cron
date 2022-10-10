@@ -12,6 +12,5 @@ public class ModelVM extends BaseVM {
 
     private String name;
     private String nativeName;
-
     private List<NicknameVM> nicks;
 }
