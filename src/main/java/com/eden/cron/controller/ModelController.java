@@ -64,6 +64,28 @@ public class ModelController {
         return ResponseEntity.accepted().body(ResponseModel.updated(result));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseModel> deleteModel(@PathVariable Long id) {
+
+        ModelVM result = modelService.deleteModel(id);
+        if (result == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ResponseModel.notFound());
+        }
+        return ResponseEntity.accepted().body(ResponseModel.deleted(result));
+    }
+
+    @DeleteMapping("/remove/{id}")
+    public ResponseEntity<ResponseModel> removeModel(@PathVariable Long id) {
+
+        ModelVM result = modelService.removeModel(id);
+        if (result == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ResponseModel.notFound());
+        }
+        return ResponseEntity.accepted().body(ResponseModel.deleted(result));
+    }
+
     @PostMapping("/nick")
     public ResponseEntity<ResponseModel> createNick(@RequestBody NicknameVM request) {
 

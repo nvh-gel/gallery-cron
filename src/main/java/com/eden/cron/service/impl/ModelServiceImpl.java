@@ -71,6 +71,32 @@ public class ModelServiceImpl implements ModelService {
         }
     }
 
+    @Override
+    public ModelVM deleteModel(Long id) {
+
+        Model model = modelRepository.findById(id).orElse(null);
+        if (model == null) {
+            return null;
+        } else {
+            model.setDeleted(true);
+            model.setUpdatedAt(LocalDateTime.now());
+            modelRepository.save(model);
+            return modelMapper.toViewModel(model);
+        }
+    }
+
+    @Override
+    public ModelVM removeModel(Long id) {
+
+        Model model = modelRepository.findById(id).orElse(null);
+        if (model == null) {
+            return null;
+        } else {
+            modelRepository.delete(model);
+            return modelMapper.toViewModel(model);
+        }
+    }
+
     @Autowired
     public void setModelRepository(ModelRepository modelRepository) {
         this.modelRepository = modelRepository;

@@ -17,4 +17,8 @@ public interface ModelService {
     List<ModelVM> findModelName(String name);
 
     ModelVM updateModel(ModelVM request);
+
+    ModelVM deleteModel(Long id);
+
+    ModelVM removeModel(Long id);
 }
