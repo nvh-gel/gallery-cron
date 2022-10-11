@@ -13,4 +13,6 @@ public interface ModelService {
     ModelVM findModelById(Long id);
 
     List<ModelVM> findModelByName(String name);
+
+    List<ModelVM> findModelName(String name);
 }
