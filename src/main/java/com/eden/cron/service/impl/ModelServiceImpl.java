@@ -36,6 +36,19 @@ public class ModelServiceImpl implements ModelService {
         return modelMapper.toViewModel(models);
     }
 
+    @Override
+    public ModelVM findModelById(Long id) {
+
+        Model model = modelRepository.findById(id).orElse(null);
+        return modelMapper.toViewModel(model);
+    }
+
+    @Override
+    public List<ModelVM> findModelByName(String name) {
+
+        List<Model> found = modelRepository.findAlllByNameIgnoreCaseContaining(name);
+        return modelMapper.toViewModel(found);
+    }
 
     @Autowired
     public void setModelRepository(ModelRepository modelRepository) {

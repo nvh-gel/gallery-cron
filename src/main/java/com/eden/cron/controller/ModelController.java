@@ -31,6 +31,22 @@ public class ModelController {
         return ResponseEntity.ok(ResponseModel.ok(modelService.findAllModels()));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseModel> getModel(@PathVariable Long id) {
+
+        ModelVM found = modelService.findModelById(id);
+        if (found != null) {
+            return ResponseEntity.ok(ResponseModel.ok(found));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ResponseModel.notFound());
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<ResponseModel> getModel(@PathVariable String name) {
+
+        return ResponseEntity.ok(ResponseModel.ok(modelService.findModelByName(name)));
+    }
+
     @PostMapping("/nick")
     public ResponseEntity<ResponseModel> createNick(@RequestBody NicknameVM request) {
 

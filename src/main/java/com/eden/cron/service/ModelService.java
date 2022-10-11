@@ -9,4 +9,8 @@ public interface ModelService {
     ModelVM createModel(ModelVM request);
 
     List<ModelVM> findAllModels();
+
+    ModelVM findModelById(Long id);
+
+    List<ModelVM> findModelByName(String name);
 }
