@@ -53,6 +53,17 @@ public class ModelController {
         return ResponseEntity.ok(ResponseModel.ok(modelService.findModelName(name)));
     }
 
+    @PutMapping
+    public ResponseEntity<ResponseModel> updateModel(@RequestBody ModelVM request) {
+
+        ModelVM result = modelService.updateModel(request);
+        if (result == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ResponseModel.notFound());
+        }
+        return ResponseEntity.accepted().body(ResponseModel.updated(result));
+    }
+
     @PostMapping("/nick")
     public ResponseEntity<ResponseModel> createNick(@RequestBody NicknameVM request) {
 

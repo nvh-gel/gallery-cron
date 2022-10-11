@@ -15,4 +15,6 @@ public interface ModelService {
     List<ModelVM> findModelByName(String name);
 
     List<ModelVM> findModelName(String name);
+
+    ModelVM updateModel(ModelVM request);
 }

@@ -57,6 +57,20 @@ public class ModelServiceImpl implements ModelService {
         return modelMapper.toViewModel(found);
     }
 
+    @Override
+    public ModelVM updateModel(ModelVM request) {
+
+        Model model = modelRepository.findById(request.getId()).orElse(null);
+        if (model == null) {
+            return null;
+        } else {
+            modelMapper.mapUpdate(model, modelMapper.toModel(request));
+            model.setUpdatedAt(LocalDateTime.now());
+            modelRepository.save(model);
+            return modelMapper.toViewModel(model);
+        }
+    }
+
     @Autowired
     public void setModelRepository(ModelRepository modelRepository) {
         this.modelRepository = modelRepository;
