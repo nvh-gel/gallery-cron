@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+/**
+ * DTO of model.
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ModelVM extends BaseVM {

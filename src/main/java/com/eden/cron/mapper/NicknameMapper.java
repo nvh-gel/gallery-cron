@@ -11,15 +11,27 @@ import org.mapstruct.*;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface NicknameMapper extends BaseMapper<Nickname, NicknameVM> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Mapping(target = "deleted", ignore = true)
     @Mapping(target = "model", source = "modelId", qualifiedByName = "mapModelId")
     Nickname toModel(NicknameVM nicknameVM);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Mapping(target = "modelId", source = "model", qualifiedByName = "mapModelIdView")
     NicknameVM toViewModel(Nickname nickname);
 
+    /**
+     * Map model id to model data
+     *
+     * @param modelId model id
+     * @return model
+     */
     @Named("mapModelId")
     default Model mapModelId(Long modelId) {
         Model model = new Model();
@@ -27,6 +39,12 @@ public interface NicknameMapper extends BaseMapper<Nickname, NicknameVM> {
         return model;
     }
 
+    /**
+     * Map model data to model id.
+     *
+     * @param model model data to map
+     * @return model id
+     */
     @Named("mapModelIdView")
     default Long mapModelIdView(Model model) {
         return model.getId();

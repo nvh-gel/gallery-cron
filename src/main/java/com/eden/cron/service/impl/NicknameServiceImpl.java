@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Implementation of nickname service.
+ */
 @Service
 public class NicknameServiceImpl implements NicknameService {
 
@@ -19,6 +22,9 @@ public class NicknameServiceImpl implements NicknameService {
 
     private final NicknameMapper nicknameMapper = Mappers.getMapper(NicknameMapper.class);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NicknameVM createNick(NicknameVM request) {
 
@@ -30,6 +36,9 @@ public class NicknameServiceImpl implements NicknameService {
         return nicknameMapper.toViewModel(created);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<NicknameVM> findAllNicks() {
 

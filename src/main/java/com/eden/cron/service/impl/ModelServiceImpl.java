@@ -8,10 +8,14 @@ import com.eden.cron.viewmodel.ModelVM;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Implementation of model service.
+ */
 @Service
 public class ModelServiceImpl implements ModelService {
 
@@ -19,7 +23,11 @@ public class ModelServiceImpl implements ModelService {
 
     private final ModelMapper modelMapper = Mappers.getMapper(ModelMapper.class);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional
     public ModelVM createModel(ModelVM request) {
 
         Model model = modelMapper.toModel(request);
@@ -29,6 +37,9 @@ public class ModelServiceImpl implements ModelService {
         return modelMapper.toViewModel(created);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ModelVM> findAllModels() {
 
@@ -36,6 +47,9 @@ public class ModelServiceImpl implements ModelService {
         return modelMapper.toViewModel(models);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ModelVM findModelById(Long id) {
 
@@ -43,6 +57,9 @@ public class ModelServiceImpl implements ModelService {
         return modelMapper.toViewModel(model);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ModelVM> findModelByName(String name) {
 
@@ -50,6 +67,9 @@ public class ModelServiceImpl implements ModelService {
         return modelMapper.toViewModel(found);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<ModelVM> findModelName(String name) {
 
@@ -57,7 +77,11 @@ public class ModelServiceImpl implements ModelService {
         return modelMapper.toViewModel(found);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional
     public ModelVM updateModel(ModelVM request) {
 
         Model model = modelRepository.findById(request.getId()).orElse(null);
@@ -71,7 +95,11 @@ public class ModelServiceImpl implements ModelService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional
     public ModelVM deleteModel(Long id) {
 
         Model model = modelRepository.findById(id).orElse(null);
@@ -85,7 +113,11 @@ public class ModelServiceImpl implements ModelService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional
     public ModelVM removeModel(Long id) {
 
         Model model = modelRepository.findById(id).orElse(null);

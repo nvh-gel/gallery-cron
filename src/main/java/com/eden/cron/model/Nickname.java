@@ -8,6 +8,9 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Data entity for model nickname.
+ */
 @Getter
 @Setter
 @Entity
