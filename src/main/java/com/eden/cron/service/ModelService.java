@@ -71,4 +71,28 @@ public interface ModelService {
      * @return deleted model
      */
     ModelVM removeModel(Long id);
+
+    /**
+     * Send a creation request to queue to process.
+     *
+     * @param request creation request data
+     * @return transaction uuid
+     */
+    String createModelOnQueue(ModelVM request);
+
+    /**
+     * Send a update request to queue to process.
+     *
+     * @param request update request data
+     * @return transaction uuid
+     */
+    String updateModelOnQueue(ModelVM request);
+
+    /**
+     * Send a deletion request to queue to process.
+     *
+     * @param id model id to delete
+     * @return transaction uuid
+     */
+    String deleteModelOnQueue(Long id);
 }

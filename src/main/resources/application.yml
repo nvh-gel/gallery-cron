@@ -1,6 +1,31 @@
 spring:
   profiles:
     active: ${ENV:dev}
+  kafka:
+    bootstrap-servers: ${CLOUDKARAFKA_BROKERS}
+    consumer:
+      auto-offset-reset: latest
+      group-id: ${CLOUDKARAFKA_USERNAME}-consumers
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties:
+      sasl:
+        jaas:
+          config: org.apache.kafka.common.security.scram.ScramLoginModule required username="${CLOUDKARAFKA_USERNAME}" password="${CLOUDKARAFKA_PASSWORD}";
+        mechanism: SCRAM-SHA-256
+      security:
+        protocol: SASL_SSL
 server:
   servlet:
     context-path: /api
+logging:
+  level:
+    root: info
+cloudkarafka:
+  topic: ${CLOUDKARAFKA_USERNAME}-default

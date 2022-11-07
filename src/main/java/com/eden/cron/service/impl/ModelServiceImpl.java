@@ -1,7 +1,10 @@
 package com.eden.cron.service.impl;
 
+import com.eden.common.utils.Action;
+import com.eden.common.utils.QueueMessage;
 import com.eden.cron.mapper.ModelMapper;
 import com.eden.cron.model.Model;
+import com.eden.cron.producer.ModelProducer;
 import com.eden.cron.repository.ModelRepository;
 import com.eden.cron.service.ModelService;
 import com.eden.cron.viewmodel.ModelVM;
@@ -12,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Implementation of model service.
@@ -22,6 +26,8 @@ public class ModelServiceImpl implements ModelService {
     private ModelRepository modelRepository;
 
     private final ModelMapper modelMapper = Mappers.getMapper(ModelMapper.class);
+
+    private ModelProducer modelProducer;
 
     /**
      * {@inheritDoc}
@@ -129,8 +135,57 @@ public class ModelServiceImpl implements ModelService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String createModelOnQueue(ModelVM request) {
+
+        return sendProcessingModelToQueue(Action.CREATE, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String updateModelOnQueue(ModelVM request) {
+
+        return sendProcessingModelToQueue(Action.UPDATE, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String deleteModelOnQueue(Long id) {
+
+        ModelVM vm = new ModelVM();
+        vm.setId(id);
+        return sendProcessingModelToQueue(Action.DELETE, vm);
+    }
+
+    /**
+     * Craft a queue message and send to kafka topic.
+     *
+     * @param action  processing action {CREATE, UPDATE, DELETE}
+     * @param request processing data
+     * @return transaction uuid
+     */
+    private String sendProcessingModelToQueue(Action action, ModelVM request) {
+
+        UUID uuid = UUID.randomUUID();
+        QueueMessage<ModelVM> message = new QueueMessage<>(action, uuid, request);
+        modelProducer.send(message);
+        return uuid.toString();
+    }
+
     @Autowired
     public void setModelRepository(ModelRepository modelRepository) {
         this.modelRepository = modelRepository;
+    }
+
+    @Autowired
+    public void setModelProducer(ModelProducer modelProducer) {
+        this.modelProducer = modelProducer;
     }
 }

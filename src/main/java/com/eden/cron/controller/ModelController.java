@@ -8,7 +8,14 @@ import com.eden.cron.viewmodel.NicknameVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Rest controller to handle models.
@@ -30,8 +37,8 @@ public class ModelController {
     @PostMapping
     public ResponseEntity<ResponseModel> createModel(@RequestBody ModelVM request) {
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(ResponseModel.created(modelService.createModel(request)));
+        return ResponseEntity.accepted()
+                .body(ResponseModel.created(modelService.createModelOnQueue(request)));
     }
 
     /**
@@ -94,12 +101,8 @@ public class ModelController {
     @PutMapping
     public ResponseEntity<ResponseModel> updateModel(@RequestBody ModelVM request) {
 
-        ModelVM result = modelService.updateModel(request);
-        if (result == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ResponseModel.notFound());
-        }
-        return ResponseEntity.accepted().body(ResponseModel.updated(result));
+        return ResponseEntity.accepted()
+                .body(ResponseModel.updated(modelService.updateModelOnQueue(request)));
     }
 
     /**
@@ -111,12 +114,8 @@ public class ModelController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseModel> deleteModel(@PathVariable Long id) {
 
-        ModelVM result = modelService.deleteModel(id);
-        if (result == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ResponseModel.notFound());
-        }
-        return ResponseEntity.accepted().body(ResponseModel.deleted(result));
+        return ResponseEntity.accepted()
+                .body(ResponseModel.deleted(modelService.deleteModelOnQueue(id)));
     }
 
     /**
@@ -145,7 +144,7 @@ public class ModelController {
     @PostMapping("/nick")
     public ResponseEntity<ResponseModel> createNick(@RequestBody NicknameVM request) {
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED)
+        return ResponseEntity.accepted()
                 .body(ResponseModel.created(nickNameService.createNick(request)));
     }
 
