@@ -1,5 +1,6 @@
 package com.eden.cron.service;
 
+import com.eden.common.service.BaseService;
 import com.eden.cron.viewmodel.ModelVM;
 
 import java.util.List;
@@ -7,30 +8,7 @@ import java.util.List;
 /**
  * Service for model.
  */
-public interface ModelService {
-
-    /**
-     * Create a model.
-     *
-     * @param request request data
-     * @return created model
-     */
-    ModelVM createModel(ModelVM request);
-
-    /**
-     * Retrieve all models.
-     *
-     * @return list of models
-     */
-    List<ModelVM> findAllModels();
-
-    /**
-     * Find model by id.
-     *
-     * @param id model id to find
-     * @return found model
-     */
-    ModelVM findModelById(Long id);
+public interface ModelService extends BaseService<ModelVM> {
 
     /**
      * Find model by model name.
@@ -47,52 +25,4 @@ public interface ModelService {
      * @return list of found models
      */
     List<ModelVM> findModelName(String name);
-
-    /**
-     * Update a single model.
-     *
-     * @param request update request data
-     * @return updated model
-     */
-    ModelVM updateModel(ModelVM request);
-
-    /**
-     * Soft delete a single model
-     *
-     * @param id model id to delete
-     * @return deleted model
-     */
-    ModelVM deleteModel(Long id);
-
-    /**
-     * Delete a model from database
-     *
-     * @param id model id to delete
-     * @return deleted model
-     */
-    ModelVM removeModel(Long id);
-
-    /**
-     * Send a creation request to queue to process.
-     *
-     * @param request creation request data
-     * @return transaction uuid
-     */
-    String createModelOnQueue(ModelVM request);
-
-    /**
-     * Send a update request to queue to process.
-     *
-     * @param request update request data
-     * @return transaction uuid
-     */
-    String updateModelOnQueue(ModelVM request);
-
-    /**
-     * Send a deletion request to queue to process.
-     *
-     * @param id model id to delete
-     * @return transaction uuid
-     */
-    String deleteModelOnQueue(Long id);
 }

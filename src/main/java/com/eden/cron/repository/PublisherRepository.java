@@ -1,12 +1,12 @@
 package com.eden.cron.repository;
 
-import com.eden.cron.model.Nickname;
+import com.eden.cron.model.Publisher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * JPA repository for model nickname.
+ * JPA repository for Publisher.
  */
 @Repository
-public interface NicknameRepository extends JpaRepository<Nickname, Long> {
+public interface PublisherRepository extends JpaRepository<Publisher, Long> {
 }

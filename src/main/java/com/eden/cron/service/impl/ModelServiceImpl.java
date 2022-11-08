@@ -1,7 +1,6 @@
 package com.eden.cron.service.impl;
 
 import com.eden.common.utils.Action;
-import com.eden.common.utils.QueueMessage;
 import com.eden.cron.mapper.ModelMapper;
 import com.eden.cron.model.Model;
 import com.eden.cron.producer.ModelProducer;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Implementation of model service.
@@ -34,7 +32,7 @@ public class ModelServiceImpl implements ModelService {
      */
     @Override
     @Transactional
-    public ModelVM createModel(ModelVM request) {
+    public ModelVM create(ModelVM request) {
 
         Model model = modelMapper.toModel(request);
         model.setCreatedAt(LocalDateTime.now());
@@ -47,7 +45,7 @@ public class ModelServiceImpl implements ModelService {
      * {@inheritDoc}
      */
     @Override
-    public List<ModelVM> findAllModels() {
+    public List<ModelVM> findAll() {
 
         List<Model> models = modelRepository.findAll();
         return modelMapper.toViewModel(models);
@@ -57,7 +55,7 @@ public class ModelServiceImpl implements ModelService {
      * {@inheritDoc}
      */
     @Override
-    public ModelVM findModelById(Long id) {
+    public ModelVM findById(Long id) {
 
         Model model = modelRepository.findById(id).orElse(null);
         return modelMapper.toViewModel(model);
@@ -88,17 +86,16 @@ public class ModelServiceImpl implements ModelService {
      */
     @Override
     @Transactional
-    public ModelVM updateModel(ModelVM request) {
+    public ModelVM update(ModelVM request) {
 
         Model model = modelRepository.findById(request.getId()).orElse(null);
         if (model == null) {
             return null;
-        } else {
-            modelMapper.mapUpdate(model, modelMapper.toModel(request));
-            model.setUpdatedAt(LocalDateTime.now());
-            modelRepository.save(model);
-            return modelMapper.toViewModel(model);
         }
+        modelMapper.mapUpdate(model, modelMapper.toModel(request));
+        model.setUpdatedAt(LocalDateTime.now());
+        Model updated = modelRepository.save(model);
+        return modelMapper.toViewModel(updated);
     }
 
     /**
@@ -106,77 +103,44 @@ public class ModelServiceImpl implements ModelService {
      */
     @Override
     @Transactional
-    public ModelVM deleteModel(Long id) {
+    public ModelVM delete(Long id) {
 
         Model model = modelRepository.findById(id).orElse(null);
         if (model == null) {
             return null;
-        } else {
-            model.setDeleted(true);
-            model.setUpdatedAt(LocalDateTime.now());
-            modelRepository.save(model);
-            return modelMapper.toViewModel(model);
         }
+        modelRepository.deleteById(id);
+        model.setUpdatedAt(LocalDateTime.now());
+        return modelMapper.toViewModel(model);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @Transactional
-    public ModelVM removeModel(Long id) {
+    public String createOnQueue(ModelVM request) {
 
-        Model model = modelRepository.findById(id).orElse(null);
-        if (model == null) {
-            return null;
-        } else {
-            modelRepository.delete(model);
-            return modelMapper.toViewModel(model);
-        }
+        return this.modelProducer.sendProcessingMessageToQueue(Action.CREATE, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String createModelOnQueue(ModelVM request) {
+    public String updateOnQueue(ModelVM request) {
 
-        return sendProcessingModelToQueue(Action.CREATE, request);
+        return this.modelProducer.sendProcessingMessageToQueue(Action.UPDATE, request);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String updateModelOnQueue(ModelVM request) {
-
-        return sendProcessingModelToQueue(Action.UPDATE, request);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String deleteModelOnQueue(Long id) {
+    public String deleteOnQueue(Long id) {
 
         ModelVM vm = new ModelVM();
         vm.setId(id);
-        return sendProcessingModelToQueue(Action.DELETE, vm);
-    }
-
-    /**
-     * Craft a queue message and send to kafka topic.
-     *
-     * @param action  processing action {CREATE, UPDATE, DELETE}
-     * @param request processing data
-     * @return transaction uuid
-     */
-    private String sendProcessingModelToQueue(Action action, ModelVM request) {
-
-        UUID uuid = UUID.randomUUID();
-        QueueMessage<ModelVM> message = new QueueMessage<>(action, uuid, request);
-        modelProducer.send(message);
-        return uuid.toString();
+        return this.modelProducer.sendProcessingMessageToQueue(Action.DELETE, vm);
     }
 
     @Autowired

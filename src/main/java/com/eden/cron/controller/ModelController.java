@@ -2,9 +2,7 @@ package com.eden.cron.controller;
 
 import com.eden.common.utils.ResponseModel;
 import com.eden.cron.service.ModelService;
-import com.eden.cron.service.NicknameService;
 import com.eden.cron.viewmodel.ModelVM;
-import com.eden.cron.viewmodel.NicknameVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +24,6 @@ public class ModelController {
 
     private ModelService modelService;
 
-    private NicknameService nickNameService;
-
     /**
      * Create model from request.
      *
@@ -38,7 +34,7 @@ public class ModelController {
     public ResponseEntity<ResponseModel> createModel(@RequestBody ModelVM request) {
 
         return ResponseEntity.accepted()
-                .body(ResponseModel.created(modelService.createModelOnQueue(request)));
+                .body(ResponseModel.created(modelService.createOnQueue(request)));
     }
 
     /**
@@ -49,7 +45,7 @@ public class ModelController {
     @GetMapping
     public ResponseEntity<ResponseModel> getAllModels() {
 
-        return ResponseEntity.ok(ResponseModel.ok(modelService.findAllModels()));
+        return ResponseEntity.ok(ResponseModel.ok(modelService.findAll()));
     }
 
     /**
@@ -61,7 +57,7 @@ public class ModelController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseModel> getModel(@PathVariable Long id) {
 
-        ModelVM found = modelService.findModelById(id);
+        ModelVM found = modelService.findById(id);
         if (found != null) {
             return ResponseEntity.ok(ResponseModel.ok(found));
         }
@@ -102,7 +98,7 @@ public class ModelController {
     public ResponseEntity<ResponseModel> updateModel(@RequestBody ModelVM request) {
 
         return ResponseEntity.accepted()
-                .body(ResponseModel.updated(modelService.updateModelOnQueue(request)));
+                .body(ResponseModel.updated(modelService.createOnQueue(request)));
     }
 
     /**
@@ -115,71 +111,14 @@ public class ModelController {
     public ResponseEntity<ResponseModel> deleteModel(@PathVariable Long id) {
 
         return ResponseEntity.accepted()
-                .body(ResponseModel.deleted(modelService.deleteModelOnQueue(id)));
+                .body(ResponseModel.deleted(modelService.deleteOnQueue(id)));
     }
 
     /**
-     * Delete model from database.
-     *
-     * @param id model id to delete
-     * @return deleted model
+     * Setter.
      */
-    @DeleteMapping("/remove/{id}")
-    public ResponseEntity<ResponseModel> removeModel(@PathVariable Long id) {
-
-        ModelVM result = modelService.removeModel(id);
-        if (result == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ResponseModel.notFound());
-        }
-        return ResponseEntity.accepted().body(ResponseModel.deleted(result));
-    }
-
-    /**
-     * Create a nickname for model
-     *
-     * @param request nick request data
-     * @return created nickname
-     */
-    @PostMapping("/nick")
-    public ResponseEntity<ResponseModel> createNick(@RequestBody NicknameVM request) {
-
-        return ResponseEntity.accepted()
-                .body(ResponseModel.created(nickNameService.createNickOnQueue(request)));
-    }
-
-    /**
-     * Get all models nickname
-     *
-     * @return list of nicknames
-     */
-    @GetMapping("/nick")
-    public ResponseEntity<ResponseModel> getAllNicks() {
-
-        return ResponseEntity.ok(ResponseModel.ok(nickNameService.findAllNicks()));
-    }
-
-    @PutMapping("/nick")
-    public ResponseEntity<ResponseModel> updateNick(@RequestBody NicknameVM request) {
-
-        return ResponseEntity.accepted()
-                .body(ResponseModel.updated(nickNameService.updateNickOnQueue(request)));
-    }
-
-    @DeleteMapping("/nick/{id}")
-    public ResponseEntity<ResponseModel> deleteNick(@PathVariable Long id) {
-
-        return ResponseEntity.accepted()
-                .body(ResponseModel.deleted(nickNameService.deleteNickOnQueue(id)));
-    }
-
     @Autowired
     public void setModelService(ModelService modelService) {
         this.modelService = modelService;
-    }
-
-    @Autowired
-    public void setNickNameService(NicknameService nickNameService) {
-        this.nickNameService = nickNameService;
     }
 }

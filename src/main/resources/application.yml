@@ -31,3 +31,4 @@ cloudkarafka:
   topic:
     model: ${CLOUDKARAFKA_USERNAME}-model
     nick: ${CLOUDKARAFKA_USERNAME}-nick
+    publisher: ${CLOUDKARAFKA_USERNAME}-publisher

@@ -1,7 +1,7 @@
 package com.eden.cron.repository;
 
 import com.eden.cron.model.Model;
-import com.eden.data.repository.SoftDeleteRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * JPA repository for model.
  */
 @Repository
-public interface ModelRepository extends SoftDeleteRepository<Model, Long> {
+public interface ModelRepository extends JpaRepository<Model, Long> {
 
     /**
      * Find model by model name.
