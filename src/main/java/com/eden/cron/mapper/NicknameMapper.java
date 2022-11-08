@@ -4,7 +4,11 @@ import com.eden.cron.model.Model;
 import com.eden.cron.model.Nickname;
 import com.eden.cron.viewmodel.NicknameVM;
 import com.eden.data.mapper.BaseMapper;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.mapstruct.NullValueMappingStrategy;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring",
         nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL,
@@ -34,6 +38,9 @@ public interface NicknameMapper extends BaseMapper<Nickname, NicknameVM> {
      */
     @Named("mapModelId")
     default Model mapModelId(Long modelId) {
+        if (modelId == null) {
+            return null;
+        }
         Model model = new Model();
         model.setId(modelId);
         return model;

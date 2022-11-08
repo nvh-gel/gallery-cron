@@ -145,7 +145,7 @@ public class ModelController {
     public ResponseEntity<ResponseModel> createNick(@RequestBody NicknameVM request) {
 
         return ResponseEntity.accepted()
-                .body(ResponseModel.created(nickNameService.createNick(request)));
+                .body(ResponseModel.created(nickNameService.createNickOnQueue(request)));
     }
 
     /**
@@ -157,6 +157,20 @@ public class ModelController {
     public ResponseEntity<ResponseModel> getAllNicks() {
 
         return ResponseEntity.ok(ResponseModel.ok(nickNameService.findAllNicks()));
+    }
+
+    @PutMapping("/nick")
+    public ResponseEntity<ResponseModel> updateNick(@RequestBody NicknameVM request) {
+
+        return ResponseEntity.accepted()
+                .body(ResponseModel.updated(nickNameService.updateNickOnQueue(request)));
+    }
+
+    @DeleteMapping("/nick/{id}")
+    public ResponseEntity<ResponseModel> deleteNick(@PathVariable Long id) {
+
+        return ResponseEntity.accepted()
+                .body(ResponseModel.deleted(nickNameService.deleteNickOnQueue(id)));
     }
 
     @Autowired

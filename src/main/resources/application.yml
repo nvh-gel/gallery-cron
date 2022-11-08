@@ -28,4 +28,6 @@ logging:
   level:
     root: info
 cloudkarafka:
-  topic: ${CLOUDKARAFKA_USERNAME}-default
+  topic:
+    model: ${CLOUDKARAFKA_USERNAME}-model
+    nick: ${CLOUDKARAFKA_USERNAME}-nick
