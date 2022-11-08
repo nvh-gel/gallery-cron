@@ -1,11 +1,10 @@
 pluginManagement {
     repositories {
-        maven { url 'https://repo.spring.io/milestone' }
         maven {
             url = uri("https://maven.pkg.github.com/nvh-gel/registry")
             credentials {
-                username = System.getenv("USER")
-                password = System.getenv("TOKEN")
+                username = System.getenv("REGISTRY_USER")
+                password = System.getenv("REGISTRY_TOKEN")
             }
         }
         gradlePluginPortal()

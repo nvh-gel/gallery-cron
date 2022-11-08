@@ -1,11 +1,11 @@
 plugins {
-    id 'org.springframework.boot' version '3.0.0-M4'
-    id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'java'
 }
 
 group = 'com.eden'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 //noinspection GroovyUnusedAssignment
 sourceCompatibility = '17'
 
@@ -17,7 +17,6 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/milestone' }
     maven {
         url = uri("https://maven.pkg.github.com/nvh-gel/registry")
         credentials {
@@ -28,9 +27,9 @@ repositories {
 }
 
 file("versions.properties").withReader {
-   Properties versions = new Properties()
-   versions.load(it)
-   project.ext.versions = versions
+    Properties versions = new Properties()
+    versions.load(it)
+    project.ext.versions = versions
 }
 
 dependencies {
