@@ -40,11 +40,18 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation "org.mapstruct:mapstruct:${versions.mapstruct}"
+    // https://mvnrepository.com/artifact/org.jsoup/jsoup
+    implementation "org.jsoup:jsoup:${versions.jsoup}"
+
+
     compileOnly 'org.projectlombok:lombok'
+
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     runtimeOnly 'org.postgresql:postgresql'
+
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor "org.mapstruct:mapstruct-processor:${versions.mapstruct}"
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
 }
