@@ -2,6 +2,7 @@ package com.eden.cron.producer;
 
 import com.eden.common.producer.BaseProducer;
 import com.eden.common.utils.QueueMessage;
+import com.eden.cron.utils.Constants;
 import com.eden.cron.viewmodel.PublisherVM;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class PublisherProducer implements BaseProducer<PublisherVM> {
     public void send(QueueMessage<PublisherVM> message) {
 
         this.kafkaTemplate.send(topic, message);
-        log.info("sent message to queue: {}", message);
+        log.info(Constants.SENT_MESSAGE, message, topic);
     }
 
     /**

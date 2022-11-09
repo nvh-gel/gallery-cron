@@ -32,3 +32,4 @@ cloudkarafka:
     model: ${CLOUDKARAFKA_USERNAME}-model
     nick: ${CLOUDKARAFKA_USERNAME}-nick
     publisher: ${CLOUDKARAFKA_USERNAME}-publisher
+    album: ${CLOUDKARAFKA_USERNAME}-album

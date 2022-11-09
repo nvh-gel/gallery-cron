@@ -4,6 +4,7 @@ import com.eden.common.consumer.BaseConsumer;
 import com.eden.common.utils.Action;
 import com.eden.common.utils.QueueMessage;
 import com.eden.cron.service.NicknameService;
+import com.eden.cron.utils.Constants;
 import com.eden.cron.viewmodel.NicknameVM;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -41,11 +42,11 @@ public class NicknameConsumer extends BaseConsumer<NicknameVM> {
     @KafkaListener(topics = "${cloudkarafka.topic.nick}")
     public void processMessage(QueueMessage<NicknameVM> queueMessage) {
 
-        log.info("message received: {}", queueMessage);
+        log.info(Constants.RECEIVED_MESSAGE, queueMessage);
         UnaryOperator<NicknameVM> function = actionMap.getOrDefault(queueMessage.getAction(), null);
         if (function != null) {
             NicknameVM processed = function.apply(queueMessage.getMessage());
-            log.info("process {} nickname: {}", queueMessage.getAction(), processed);
+            log.info(Constants.PROCESSED_MESSAGE, queueMessage.getAction(), processed);
         }
     }
 }

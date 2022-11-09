@@ -4,6 +4,7 @@ import com.eden.common.consumer.BaseConsumer;
 import com.eden.common.utils.Action;
 import com.eden.common.utils.QueueMessage;
 import com.eden.cron.service.PublisherService;
+import com.eden.cron.utils.Constants;
 import com.eden.cron.viewmodel.PublisherVM;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -22,8 +23,6 @@ public class PublisherConsumer extends BaseConsumer<PublisherVM> {
 
     /**
      * Constructor.
-     *
-     * @param publisherService publisher service bean
      */
     public PublisherConsumer(PublisherService publisherService) {
 
@@ -41,11 +40,11 @@ public class PublisherConsumer extends BaseConsumer<PublisherVM> {
     @KafkaListener(topics = "${cloudkarafka.topic.publisher}")
     public void processMessage(QueueMessage<PublisherVM> message) {
 
-        log.info("received message {}", message);
+        log.info(Constants.RECEIVED_MESSAGE, message);
         UnaryOperator<PublisherVM> function = actionMap.getOrDefault(message.getAction(), null);
         if (function != null) {
             PublisherVM result = function.apply(message.getMessage());
-            log.info("processed {} publisher: {}", message.getAction(), result);
+            log.info(Constants.PROCESSED_MESSAGE, message.getAction(), result);
         }
     }
 }
