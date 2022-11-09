@@ -7,6 +7,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * Data entity for album.
@@ -19,4 +22,9 @@ import javax.persistence.Entity;
 public class Album extends BaseModel {
 
     private String name;
+
+    @SuppressWarnings("JpaDataSourceORMInspection")
+    @ManyToOne(targetEntity = Publisher.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "publisher_id")
+    private Publisher publisher;
 }

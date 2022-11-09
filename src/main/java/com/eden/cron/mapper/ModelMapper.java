@@ -23,12 +23,6 @@ public interface ModelMapper extends BaseMapper<Model, ModelVM> {
     Model toModel(ModelVM modelVM);
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    ModelVM toViewModel(Model model);
-
-    /**
      * Map children nicknameVM to nickname Model
      *
      * @param nicknameVM view model

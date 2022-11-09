@@ -12,4 +12,6 @@ import lombok.EqualsAndHashCode;
 public class AlbumVM extends BaseVM {
 
     private String name;
+
+    private Long publisherId;
 }

@@ -7,6 +7,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 /**
  * Data entity for publisher.
@@ -19,4 +22,7 @@ import javax.persistence.Entity;
 public class Publisher extends BaseModel {
 
     private String name;
+
+    @OneToMany(targetEntity = Album.class, fetch = FetchType.LAZY, mappedBy = "publisher")
+    private List<Album> albums;
 }

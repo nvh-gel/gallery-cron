@@ -7,6 +7,7 @@ import com.eden.cron.service.AlbumService;
 import com.eden.cron.utils.Constants;
 import com.eden.cron.viewmodel.AlbumVM;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 import java.util.function.UnaryOperator;
@@ -36,6 +37,7 @@ public class AlbumConsumer extends BaseConsumer<AlbumVM> {
      * {@inheritDoc}
      */
     @Override
+    @KafkaListener(topics = "${cloudkarafka.topic.album}")
     public void processMessage(QueueMessage<AlbumVM> queueMessage) {
 
         log.info(Constants.RECEIVED_MESSAGE, queueMessage);
