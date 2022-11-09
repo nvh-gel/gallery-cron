@@ -24,6 +24,8 @@ public class Model extends BaseModel {
 
     private String name;
     private String nativeName;
+    private String thumbnail;
+    private String url;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "model")
     private List<Nickname> nicks;

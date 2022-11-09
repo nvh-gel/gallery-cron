@@ -14,6 +14,9 @@ import java.util.List;
 public class AlbumVM extends BaseVM {
 
     private String name;
+    private String thumbnail;
+    private String url;
+    private String tags;
 
     private Long publisherId;
 

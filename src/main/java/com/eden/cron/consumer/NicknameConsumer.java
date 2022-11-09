@@ -39,7 +39,7 @@ public class NicknameConsumer extends BaseConsumer<NicknameVM> {
      * {@inheritDoc}
      */
     @Override
-    @KafkaListener(topics = "${cloudkarafka.topic.nick}")
+//    @KafkaListener(topics = "${cloudkarafka.topic.nick}")
     public void processMessage(QueueMessage<NicknameVM> queueMessage) {
 
         log.info(Constants.RECEIVED_MESSAGE, queueMessage);

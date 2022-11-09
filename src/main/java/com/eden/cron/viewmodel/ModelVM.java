@@ -17,6 +17,10 @@ public class ModelVM extends BaseVM {
 
     private String nativeName;
 
+    private String thumbnail;
+
+    private String url;
+
     private List<NicknameVM> nicks;
 
     private List<AlbumVM> albums;

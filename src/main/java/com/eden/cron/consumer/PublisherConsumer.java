@@ -37,7 +37,7 @@ public class PublisherConsumer extends BaseConsumer<PublisherVM> {
      * {@inheritDoc}
      */
     @Override
-    @KafkaListener(topics = "${cloudkarafka.topic.publisher}")
+//    @KafkaListener(topics = "${cloudkarafka.topic.publisher}")
     public void processMessage(QueueMessage<PublisherVM> message) {
 
         log.info(Constants.RECEIVED_MESSAGE, message);

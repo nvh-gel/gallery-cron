@@ -16,7 +16,7 @@ public class TestController {
     @GetMapping
     public ResponseEntity<String> testCrawling() {
 
-        crawlerService.crawlSite("https://mrcong.com");
+        crawlerService.crawlForModel("https://mrcong.com");
         return ResponseEntity.ok("success");
     }
 

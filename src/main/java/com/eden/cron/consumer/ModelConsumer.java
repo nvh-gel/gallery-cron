@@ -37,7 +37,7 @@ public class ModelConsumer extends BaseConsumer<ModelVM> {
      * {@inheritDoc}
      */
     @Override
-    @KafkaListener(topics = "${cloudkarafka.topic.model}")
+//    @KafkaListener(topics = "${cloudkarafka.topic.model}")
     public void processMessage(QueueMessage<ModelVM> message) {
 
         log.info(Constants.RECEIVED_MESSAGE, message);
