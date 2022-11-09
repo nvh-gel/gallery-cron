@@ -1,11 +1,17 @@
 package com.eden.cron.mapper;
 
+import com.eden.cron.model.Album;
 import com.eden.cron.model.Model;
 import com.eden.cron.model.Nickname;
+import com.eden.cron.viewmodel.AlbumVM;
 import com.eden.cron.viewmodel.ModelVM;
 import com.eden.cron.viewmodel.NicknameVM;
 import com.eden.data.mapper.BaseMapper;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.mapstruct.NullValueMappingStrategy;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 /**
  * Mapstruct mapper for models.
@@ -38,7 +44,7 @@ public interface ModelMapper extends BaseMapper<Model, ModelVM> {
      * @param nickname nickname model
      * @return nickname view model
      */
-    @Mapping(target = "modelId", source = "model", qualifiedByName = "mapModelIdView")
+    @Mapping(target = "modelId", source = "model", qualifiedByName = "mapModelToId")
     NicknameVM nicknameToNicknameVM(Nickname nickname);
 
     /**
@@ -47,8 +53,17 @@ public interface ModelMapper extends BaseMapper<Model, ModelVM> {
      * @param model model data
      * @return modelId
      */
-    @Named("mapModelIdView")
+    @Named("mapModelToId")
     default Long mapModelIdView(Model model) {
         return model.getId();
     }
+
+    @Mapping(target = "publisherId", ignore = true)
+    @Mapping(target = "models", ignore = true)
+    AlbumVM albumToAlbumVM(Album album);
+
+    @Mapping(target = "deleted", ignore = true)
+    @Mapping(target = "publisher", ignore = true)
+    @Mapping(target = "models", ignore = true)
+    Album albumVMToAlbum(AlbumVM albumVM);
 }

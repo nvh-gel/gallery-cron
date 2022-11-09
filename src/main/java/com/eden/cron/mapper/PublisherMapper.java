@@ -33,6 +33,7 @@ public interface PublisherMapper extends BaseMapper<Publisher, PublisherVM> {
      * @return album VM
      */
     @Mapping(target = "publisherId", source = "publisher", qualifiedByName = "mapPublisherToId")
+    @Mapping(target = "models", ignore = true)
     AlbumVM mapToAlbumVM(Album album);
 
     /**
@@ -57,5 +58,6 @@ public interface PublisherMapper extends BaseMapper<Publisher, PublisherVM> {
      */
     @Mapping(target = "publisher", ignore = true)
     @Mapping(target = "deleted", ignore = true)
+    @Mapping(target = "models", ignore = true)
     Album mapToAlbum(AlbumVM albumVM);
 }

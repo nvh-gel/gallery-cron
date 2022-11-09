@@ -9,7 +9,10 @@ import org.hibernate.annotations.Where;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import java.util.List;
 
 /**
  * Data entity for album.
@@ -23,8 +26,11 @@ public class Album extends BaseModel {
 
     private String name;
 
-    @SuppressWarnings("JpaDataSourceORMInspection")
     @ManyToOne(targetEntity = Publisher.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
+
+    @ManyToMany(targetEntity = Model.class, fetch = FetchType.LAZY)
+    @JoinTable(name = "album_model")
+    private List<Model> models;
 }

@@ -8,6 +8,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -26,4 +27,7 @@ public class Model extends BaseModel {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "model")
     private List<Nickname> nicks;
+
+    @ManyToMany(targetEntity = Album.class, fetch = FetchType.LAZY, mappedBy = "models")
+    private List<Album> albums;
 }

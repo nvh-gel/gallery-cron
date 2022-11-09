@@ -24,7 +24,6 @@ public class Nickname extends BaseModel {
 
     private String nick;
 
-    @SuppressWarnings("JpaDataSourceORMInspection")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id", nullable = false)
     private Model model;
