@@ -67,16 +67,6 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public List<ModelVM> findModelByName(String name) {
 
-        List<Model> found = modelRepository.findAllByNameIgnoreCaseContaining(name);
-        return modelMapper.toViewModel(found);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<ModelVM> findModelName(String name) {
-
         List<Model> found = modelRepository.findAllByName(name);
         return modelMapper.toViewModel(found);
     }

@@ -65,27 +65,15 @@ public class ModelController {
     }
 
     /**
-     * Find models by name.
-     *
-     * @param name name to find
-     * @return found models
-     */
-    @GetMapping("/name/{name}")
-    public ResponseEntity<ResponseModel> getModel(@PathVariable String name) {
-
-        return ResponseEntity.ok(ResponseModel.ok(modelService.findModelByName(name)));
-    }
-
-    /**
      * Find models by name, nickname, native name.
      *
      * @param name name to find
      * @return found models
      */
-    @GetMapping("/all/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<ResponseModel> findModelByName(@PathVariable String name) {
 
-        return ResponseEntity.ok(ResponseModel.ok(modelService.findModelName(name)));
+        return ResponseEntity.ok(ResponseModel.ok(modelService.findModelByName(name)));
     }
 
     /**

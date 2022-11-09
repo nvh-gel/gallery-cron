@@ -11,18 +11,10 @@ import java.util.List;
 public interface ModelService extends BaseService<ModelVM> {
 
     /**
-     * Find model by model name.
-     *
-     * @param name model name to find
-     * @return found model
-     */
-    List<ModelVM> findModelByName(String name);
-
-    /**
      * Find all models by name, native name or nickname.
      *
      * @param name name to find
      * @return list of found models
      */
-    List<ModelVM> findModelName(String name);
+    List<ModelVM> findModelByName(String name);
 }

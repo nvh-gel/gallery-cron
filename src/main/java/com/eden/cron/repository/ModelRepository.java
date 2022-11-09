@@ -14,14 +14,6 @@ import java.util.List;
 public interface ModelRepository extends JpaRepository<Model, Long> {
 
     /**
-     * Find model by model name.
-     *
-     * @param name model name
-     * @return list of found models
-     */
-    List<Model> findAllByNameIgnoreCaseContaining(String name);
-
-    /**
      * Find all models by name, native name or nickname
      *
      * @param name name to find
