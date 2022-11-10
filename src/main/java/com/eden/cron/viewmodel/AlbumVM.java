@@ -1,8 +1,10 @@
 package com.eden.cron.viewmodel;
 
 import com.eden.common.viewmodel.BaseVM;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -11,6 +13,8 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class AlbumVM extends BaseVM {
 
     private String name;

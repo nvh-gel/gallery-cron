@@ -1,5 +1,7 @@
 package com.eden.cron.service.impl;
 
+import com.eden.common.utils.Action;
+import com.eden.cron.model.Config;
 import com.eden.cron.producer.AlbumProducer;
 import com.eden.cron.producer.ModelProducer;
 import com.eden.cron.repository.ConfigRepository;
@@ -14,16 +16,16 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Log4j2
 public class CrawlerServiceImpl implements CrawlerService {
 
     private final ConfigRepository configRepository;
-
-    private final PublisherRepository publisherRepository;
 
     private final AlbumProducer albumProducer;
 
@@ -36,44 +38,60 @@ public class CrawlerServiceImpl implements CrawlerService {
                               AlbumProducer albumProducer,
                               ModelProducer modelProducer) {
         this.configRepository = configRepository;
-        this.publisherRepository = publisherRepository;
         this.albumProducer = albumProducer;
         this.modelProducer = modelProducer;
 
-        this.publishers = this.publisherRepository.findALlName();
+        this.publishers = publisherRepository.findALlName();
     }
 
     @Override
+    @Transactional(Transactional.TxType.REQUIRED)
     public void crawlForModel(String url) {
 
         try {
-            int page = configRepository.getById("PAGE").getPage();
+            Config pageConfig = configRepository.getById("PAGE");
+            int page = pageConfig.getValue();
+            if (page > 1200) {
+                return;
+            }
 
             String pageUrl = url + "/page/" + page;
 
             Document doc = Jsoup.connect(pageUrl).get();
             Elements articles = doc.select("article");
             articles.forEach(this::retrieveModel);
+            this.updatePageConfig(page);
         } catch (IOException e) {
             log.error(e);
         }
     }
 
+    @Transactional(Transactional.TxType.REQUIRED)
+    public void updatePageConfig(int page) {
+        page++;
+        Config pageConfig = new Config();
+        pageConfig.setKey("PAGE");
+        pageConfig.setValue(page);
+        configRepository.save(pageConfig);
+    }
+
     private void retrieveModel(Element element) {
 
-        Element album = element.selectFirst("h2").selectFirst("a");
+        Element album = Objects.requireNonNull(element.selectFirst("h2")).selectFirst("a");
+        assert album != null;
         String albumUrl = album.attr("href");
         String albumName = album.text();
-        String albumThumbnail = element.selectFirst("img").attr("src");
+        String albumThumbnail = Objects.requireNonNull(element.selectFirst("img")).attr("src");
         Elements tags = element.getElementsByAttributeValue("rel", "tag");
         StringBuilder albumTags = new StringBuilder();
-        String modelName = "";
-        String nativeName = "";
-        String modelUrl = "";
+        String modelName = null;
+        String nativeName = null;
+        String modelUrl = null;
         for (Element tag : tags) {
             String innerText = tag.text();
             if (isNativeName(innerText)) {
                 nativeName = innerText;
+                modelUrl = modelUrl == null ? tag.attr("href") : modelUrl;
                 albumTags.append(" ").append(nativeName);
                 continue;
             }
@@ -86,19 +104,14 @@ public class CrawlerServiceImpl implements CrawlerService {
             }
         }
 
-        AlbumVM albumVM = new AlbumVM();
-        albumVM.setName(albumName);
-        albumVM.setUrl(albumUrl);
-        albumVM.setThumbnail(albumThumbnail);
-        albumVM.setTags(albumTags.toString());
+        AlbumVM albumVM = new AlbumVM(albumName, albumThumbnail, albumUrl, albumTags.toString().trim(),
+                null, null);
 
-        ModelVM modelVM = new ModelVM();
-        modelVM.setName(modelName);
-        modelVM.setThumbnail(albumThumbnail);
-        modelVM.setNativeName(nativeName);
-        modelVM.setUrl(modelUrl);
+        ModelVM modelVM = new ModelVM(modelName, nativeName, albumThumbnail, modelUrl,
+                null, null);
 
-//        log.info("\n {}\n {}", modelVM, albumVM);
+        modelProducer.sendProcessingMessageToQueue(Action.CREATE, modelVM);
+        albumProducer.sendProcessingMessageToQueue(Action.CREATE, albumVM);
     }
 
     private boolean isNativeName(String text) {
@@ -110,6 +123,6 @@ public class CrawlerServiceImpl implements CrawlerService {
     }
 
     private boolean isModelName(String text) {
-        return !isPublisher(text.toLowerCase());
+        return !isPublisher(text);
     }
 }

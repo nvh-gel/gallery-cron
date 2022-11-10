@@ -7,6 +7,7 @@ import com.eden.cron.producer.AlbumProducer;
 import com.eden.cron.repository.AlbumRepository;
 import com.eden.cron.service.AlbumService;
 import com.eden.cron.viewmodel.AlbumVM;
+import lombok.extern.log4j.Log4j2;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
  * Service implementation for album.
  */
 @Service
+@Log4j2
 public class AlbumServiceImpl implements AlbumService {
 
     private AlbumRepository albumRepository;
@@ -34,11 +36,16 @@ public class AlbumServiceImpl implements AlbumService {
     @Transactional
     public AlbumVM create(AlbumVM albumVM) {
 
-        Album album = albumMapper.toModel(albumVM);
-        album.setCreatedAt(LocalDateTime.now());
-        album.setUpdatedAt(LocalDateTime.now());
-        Album created = albumRepository.save(album);
-        return albumMapper.toViewModel(created);
+        Album exist = albumRepository.findFirstByNameEquals(albumVM.getName());
+        if (exist == null) {
+            Album album = albumMapper.toModel(albumVM);
+            album.setCreatedAt(LocalDateTime.now());
+            album.setUpdatedAt(LocalDateTime.now());
+            Album created = albumRepository.save(album);
+            return albumMapper.toViewModel(created);
+        }
+        log.info("album {} already exists.", albumVM.getName());
+        return albumMapper.toViewModel(exist);
     }
 
     /**

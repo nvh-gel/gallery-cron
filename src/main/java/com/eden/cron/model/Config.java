@@ -13,5 +13,5 @@ public class Config {
 
     @Id
     private String key;
-    private int page;
+    private int value;
 }

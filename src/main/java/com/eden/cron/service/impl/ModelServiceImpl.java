@@ -7,6 +7,7 @@ import com.eden.cron.producer.ModelProducer;
 import com.eden.cron.repository.ModelRepository;
 import com.eden.cron.service.ModelService;
 import com.eden.cron.viewmodel.ModelVM;
+import lombok.extern.log4j.Log4j2;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
  * Implementation of model service.
  */
 @Service
+@Log4j2
 public class ModelServiceImpl implements ModelService {
 
     private ModelRepository modelRepository;
@@ -34,11 +36,18 @@ public class ModelServiceImpl implements ModelService {
     @Transactional
     public ModelVM create(ModelVM request) {
 
-        Model model = modelMapper.toModel(request);
-        model.setCreatedAt(LocalDateTime.now());
-        model.setUpdatedAt(LocalDateTime.now());
-        Model created = modelRepository.save(model);
-        return modelMapper.toViewModel(created);
+        Model exist = modelRepository.findFirstByNameIsNotNullAndNameEqualsOrNameIsNullAndNativeNameEquals(
+                request.getName(),
+                request.getNativeName());
+        if (exist == null) {
+            Model model = modelMapper.toModel(request);
+            model.setCreatedAt(LocalDateTime.now());
+            model.setUpdatedAt(LocalDateTime.now());
+            Model created = modelRepository.save(model);
+            return modelMapper.toViewModel(created);
+        }
+        log.info("model already exist {}", exist);
+        return modelMapper.toViewModel(exist);
     }
 
     /**

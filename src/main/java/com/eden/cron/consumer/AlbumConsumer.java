@@ -37,7 +37,7 @@ public class AlbumConsumer extends BaseConsumer<AlbumVM> {
      * {@inheritDoc}
      */
     @Override
-//    @KafkaListener(topics = "${cloudkarafka.topic.album}")
+    @KafkaListener(topics = "${cloudkarafka.topic.album}")
     public void processMessage(QueueMessage<AlbumVM> queueMessage) {
 
         log.info(Constants.RECEIVED_MESSAGE, queueMessage);

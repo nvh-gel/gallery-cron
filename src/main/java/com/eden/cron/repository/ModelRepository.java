@@ -13,6 +13,8 @@ import java.util.List;
 @Repository
 public interface ModelRepository extends JpaRepository<Model, Long> {
 
+    Model findFirstByNameIsNotNullAndNameEqualsOrNameIsNullAndNativeNameEquals(String name, String nativeName);
+
     /**
      * Find all models by name, native name or nickname
      *
