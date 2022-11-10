@@ -6,6 +6,7 @@ import com.eden.cron.model.Publisher;
 import com.eden.cron.producer.PublisherProducer;
 import com.eden.cron.repository.PublisherRepository;
 import com.eden.cron.service.PublisherService;
+import com.eden.cron.viewmodel.BatchPublisherVM;
 import com.eden.cron.viewmodel.PublisherVM;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +123,19 @@ public class PublisherServiceImpl implements PublisherService {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> batchCreate(BatchPublisherVM request) {
+
+        return request.getNames().stream().map(x -> {
+            PublisherVM vm = new PublisherVM();
+            vm.setName(x);
+            return publisherProducer.sendProcessingMessageToQueue(Action.CREATE, vm);
+        }).toList();
+    }
+
+    /**
      * Setter.
      */
     @Autowired
@@ -136,4 +150,5 @@ public class PublisherServiceImpl implements PublisherService {
     public void setPublisherProducer(PublisherProducer publisherProducer) {
         this.publisherProducer = publisherProducer;
     }
+
 }

@@ -2,6 +2,7 @@ package com.eden.cron.controller;
 
 import com.eden.common.utils.ResponseModel;
 import com.eden.cron.service.PublisherService;
+import com.eden.cron.viewmodel.BatchPublisherVM;
 import com.eden.cron.viewmodel.PublisherVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -86,6 +87,19 @@ public class PublisherController {
 
         return ResponseEntity.accepted()
                 .body(ResponseModel.deleted(publisherService.deleteOnQueue(id)));
+    }
+
+    /**
+     * Batch create from a list of names.
+     *
+     * @param request batch request data
+     * @return list of transaction uuid
+     */
+    @PostMapping("/batch")
+    public ResponseEntity<ResponseModel> batchCreatePublisher(@RequestBody BatchPublisherVM request) {
+
+        return ResponseEntity.accepted()
+                .body(ResponseModel.created(publisherService.batchCreate(request)));
     }
 
     /**
