@@ -107,6 +107,12 @@ public interface AlbumMapper extends BaseMapper<Album, AlbumVM> {
     @Mapping(target = "albums", ignore = true)
     Model modelVMToModel(ModelVM modelVM);
 
+    /**
+     * Map albums in child models.
+     *
+     * @param model child model to map
+     * @return model vm
+     */
     @Mapping(target = "albums", ignore = true)
     ModelVM modelToModelVM(Model model);
 }

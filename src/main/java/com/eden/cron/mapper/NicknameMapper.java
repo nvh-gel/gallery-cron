@@ -10,6 +10,9 @@ import org.mapstruct.Named;
 import org.mapstruct.NullValueMappingStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
+/**
+ * Mapstruct mapper for model nickname.
+ */
 @Mapper(componentModel = "spring",
         nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

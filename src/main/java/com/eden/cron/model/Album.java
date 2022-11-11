@@ -28,6 +28,7 @@ public class Album extends BaseModel {
     private String thumbnail;
     private String url;
     private String tags;
+    private boolean favourite;
 
     @ManyToOne(targetEntity = Publisher.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")

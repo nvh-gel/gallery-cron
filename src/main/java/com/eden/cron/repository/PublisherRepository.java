@@ -13,6 +13,11 @@ import java.util.List;
 @Repository
 public interface PublisherRepository extends JpaRepository<Publisher, Long> {
 
+    /**
+     * Select list of publisher names.
+     *
+     * @return list of names
+     */
     @Query("select name from Publisher")
     List<String> findALlName();
 }

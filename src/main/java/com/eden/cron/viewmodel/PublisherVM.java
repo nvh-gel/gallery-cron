@@ -14,6 +14,5 @@ import java.util.List;
 public class PublisherVM extends BaseVM {
 
     private String name;
-
     private List<AlbumVM> albums;
 }

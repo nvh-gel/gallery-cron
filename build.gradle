@@ -40,7 +40,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation "org.mapstruct:mapstruct:${versions.mapstruct}"
-    // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation "org.jsoup:jsoup:${versions.jsoup}"
 
 

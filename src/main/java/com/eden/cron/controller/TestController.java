@@ -1,27 +1,23 @@
-package com.eden.cron.cron;
+package com.eden.cron.controller;
 
 import com.eden.cron.service.CrawlerService;
 import com.eden.cron.utils.Constants;
-import com.eden.cron.utils.ScheduleConstants;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Cron Scheduler for crawler
- */
-@Component
-@Log4j2
-public class CrawlingCron {
+@RestController
+@RequestMapping("test")
+public class TestController {
 
     private CrawlerService crawlerService;
 
     /**
-     * Schedule a running cron for crawling site.
+     * Controller for test purpose.
      */
-    @Scheduled(cron = ScheduleConstants.EVERY_MINUTE)
-    public void crawlingJob() {
+    @GetMapping
+    public void test() {
 
         crawlerService.crawlFullSite(Constants.SITE_MRCONG);
     }

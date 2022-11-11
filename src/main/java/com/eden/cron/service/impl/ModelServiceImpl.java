@@ -46,7 +46,7 @@ public class ModelServiceImpl implements ModelService {
             Model created = modelRepository.save(model);
             return modelMapper.toViewModel(created);
         }
-        log.info("model already exist {}", exist);
+        log.info("model {} {} already exist", exist.getName(), exist.getNativeName());
         return modelMapper.toViewModel(exist);
     }
 
@@ -142,11 +142,17 @@ public class ModelServiceImpl implements ModelService {
         return this.modelProducer.sendProcessingMessageToQueue(Action.DELETE, vm);
     }
 
+    /**
+     * Setter.
+     */
     @Autowired
     public void setModelRepository(ModelRepository modelRepository) {
         this.modelRepository = modelRepository;
     }
 
+    /**
+     * Setter.
+     */
     @Autowired
     public void setModelProducer(ModelProducer modelProducer) {
         this.modelProducer = modelProducer;

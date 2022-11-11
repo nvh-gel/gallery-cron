@@ -37,6 +37,17 @@ public interface PublisherMapper extends BaseMapper<Publisher, PublisherVM> {
     AlbumVM mapToAlbumVM(Album album);
 
     /**
+     * Map child album vm to album model
+     *
+     * @param albumVM album VM
+     * @return album model
+     */
+    @Mapping(target = "publisher", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
+    @Mapping(target = "models", ignore = true)
+    Album mapToAlbum(AlbumVM albumVM);
+
+    /**
      * Map child album publisher to ID.
      *
      * @param publisher publisher data
@@ -49,15 +60,4 @@ public interface PublisherMapper extends BaseMapper<Publisher, PublisherVM> {
         }
         return publisher.getId();
     }
-
-    /**
-     * Map child album vm to album model
-     *
-     * @param albumVM album VM
-     * @return album model
-     */
-    @Mapping(target = "publisher", ignore = true)
-    @Mapping(target = "deleted", ignore = true)
-    @Mapping(target = "models", ignore = true)
-    Album mapToAlbum(AlbumVM albumVM);
 }

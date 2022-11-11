@@ -18,14 +18,10 @@ import java.util.List;
 public class ModelVM extends BaseVM {
 
     private String name;
-
     private String nativeName;
-
     private String thumbnail;
-
     private String url;
-
+    private Boolean favourite;
     private List<NicknameVM> nicks;
-
     private List<AlbumVM> albums;
 }

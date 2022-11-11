@@ -21,8 +21,7 @@ public class AlbumVM extends BaseVM {
     private String thumbnail;
     private String url;
     private String tags;
-
+    private Boolean favourite;
     private Long publisherId;
-
     private List<ModelVM> models;
 }

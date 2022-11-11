@@ -29,7 +29,7 @@ public interface ModelMapper extends BaseMapper<Model, ModelVM> {
     Model toModel(ModelVM modelVM);
 
     /**
-     * Map children nicknameVM to nickname Model
+     * Map children nicknameVM to nickname Model.
      *
      * @param nicknameVM view model
      * @return nickname model
@@ -39,7 +39,7 @@ public interface ModelMapper extends BaseMapper<Model, ModelVM> {
     Nickname nicknameVMToNickname(NicknameVM nicknameVM);
 
     /**
-     * Map children nickname model to VM
+     * Map children nickname model to VM.
      *
      * @param nickname nickname model
      * @return nickname view model
@@ -48,7 +48,28 @@ public interface ModelMapper extends BaseMapper<Model, ModelVM> {
     NicknameVM nicknameToNicknameVM(Nickname nickname);
 
     /**
-     * Map nickname model to modelId
+     * Map child albums to album vms.
+     *
+     * @param album album data
+     * @return album vm
+     */
+    @Mapping(target = "publisherId", ignore = true)
+    @Mapping(target = "models", ignore = true)
+    AlbumVM albumToAlbumVM(Album album);
+
+    /**
+     * Map child album vm to data model.
+     *
+     * @param albumVM album vm to map
+     * @return album data
+     */
+    @Mapping(target = "deleted", ignore = true)
+    @Mapping(target = "publisher", ignore = true)
+    @Mapping(target = "models", ignore = true)
+    Album albumVMToAlbum(AlbumVM albumVM);
+
+    /**
+     * Map nickname model to modelId.
      *
      * @param model model data
      * @return modelId
@@ -57,13 +78,4 @@ public interface ModelMapper extends BaseMapper<Model, ModelVM> {
     default Long mapModelIdView(Model model) {
         return model.getId();
     }
-
-    @Mapping(target = "publisherId", ignore = true)
-    @Mapping(target = "models", ignore = true)
-    AlbumVM albumToAlbumVM(Album album);
-
-    @Mapping(target = "deleted", ignore = true)
-    @Mapping(target = "publisher", ignore = true)
-    @Mapping(target = "models", ignore = true)
-    Album albumVMToAlbum(AlbumVM albumVM);
 }

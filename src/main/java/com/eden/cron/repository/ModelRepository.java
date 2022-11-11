@@ -13,10 +13,17 @@ import java.util.List;
 @Repository
 public interface ModelRepository extends JpaRepository<Model, Long> {
 
+    /**
+     * Find first model that has name or native name matches.
+     *
+     * @param name       name to find
+     * @param nativeName native name to find
+     * @return found model
+     */
     Model findFirstByNameIsNotNullAndNameEqualsOrNameIsNullAndNativeNameEquals(String name, String nativeName);
 
     /**
-     * Find all models by name, native name or nickname
+     * Find all models by name, native name or nickname.
      *
      * @param name name to find
      * @return list of found models
