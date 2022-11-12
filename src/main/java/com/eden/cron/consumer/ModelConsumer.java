@@ -43,8 +43,7 @@ public class ModelConsumer extends BaseConsumer<ModelVM> {
         log.info(Constants.RECEIVED_MESSAGE, message);
         UnaryOperator<ModelVM> function = actionMap.getOrDefault(message.getAction(), null);
         if (function != null) {
-            ModelVM processed = function.apply(message.getMessage());
-            log.info(Constants.PROCESSED_MESSAGE, message.getAction(), processed);
+            function.apply(message.getMessage());
         }
     }
 }

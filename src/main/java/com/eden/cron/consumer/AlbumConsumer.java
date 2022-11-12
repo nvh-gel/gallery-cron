@@ -43,8 +43,7 @@ public class AlbumConsumer extends BaseConsumer<AlbumVM> {
         log.info(Constants.RECEIVED_MESSAGE, queueMessage);
         UnaryOperator<AlbumVM> function = actionMap.getOrDefault(queueMessage.getAction(), null);
         if (function != null) {
-            AlbumVM processed = function.apply(queueMessage.getMessage());
-            log.info(Constants.PROCESSED_MESSAGE, queueMessage.getAction(), processed);
+            function.apply(queueMessage.getMessage());
         }
     }
 }

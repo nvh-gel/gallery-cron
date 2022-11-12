@@ -66,8 +66,10 @@ public class CrawlerServiceImpl implements CrawlerService {
         }
         try {
             Config pageConfig = configRepository.getById(Constants.PAGE_CONFIG);
+            Config maxPageConfig = configRepository.getById(Constants.MAX_PAGE_CONFIG);
             int page = pageConfig.getValue();
-            if (page > 1200) {
+            int maxPage = maxPageConfig.getValue();
+            if (page > maxPage) {
                 return;
             }
 
@@ -104,11 +106,16 @@ public class CrawlerServiceImpl implements CrawlerService {
      */
     private void parseArticle(Element article) {
 
-        ModelVM modelVM = parseModel(article);
-        AlbumVM albumVM = parseAlbum(article);
+        try {
+            ModelVM modelVM = parseModel(article);
+            AlbumVM albumVM = parseAlbum(article);
 
-        modelProducer.sendProcessingMessageToQueue(Action.CREATE, modelVM);
-        albumProducer.sendProcessingMessageToQueue(Action.CREATE, albumVM);
+            modelProducer.sendProcessingMessageToQueue(Action.CREATE, modelVM);
+            albumProducer.sendProcessingMessageToQueue(Action.CREATE, albumVM);
+        } catch (NullPointerException e) {
+            log.error("null pointer when processing article {}", article.selectFirst("a"));
+            log.error(e);
+        }
     }
 
     /**

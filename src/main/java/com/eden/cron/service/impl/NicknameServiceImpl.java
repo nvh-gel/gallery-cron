@@ -6,7 +6,9 @@ import com.eden.cron.model.Nickname;
 import com.eden.cron.producer.NicknameProducer;
 import com.eden.cron.repository.NicknameRepository;
 import com.eden.cron.service.NicknameService;
+import com.eden.cron.utils.Constants;
 import com.eden.cron.viewmodel.NicknameVM;
+import lombok.extern.log4j.Log4j2;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.util.List;
  * Implementation of nickname service.
  */
 @Service
+@Log4j2
 public class NicknameServiceImpl implements NicknameService {
 
     private NicknameRepository nicknameRepository;
@@ -35,8 +38,8 @@ public class NicknameServiceImpl implements NicknameService {
         Nickname nick = nicknameMapper.toModel(request);
         nick.setCreatedAt(LocalDateTime.now());
         nick.setUpdatedAt(LocalDateTime.now());
-
         Nickname created = nicknameRepository.save(nick);
+        log.info(Constants.PROCESSED_MESSAGE, Action.CREATE, request);
         return nicknameMapper.toViewModel(created);
     }
 
@@ -73,6 +76,7 @@ public class NicknameServiceImpl implements NicknameService {
         nicknameMapper.mapUpdate(nick, nicknameMapper.toModel(request));
         nick.setUpdatedAt(LocalDateTime.now());
         Nickname updated = nicknameRepository.save(nick);
+        log.info(Constants.PROCESSED_MESSAGE, Action.UPDATE, request);
         return nicknameMapper.toViewModel(updated);
     }
 
@@ -88,6 +92,7 @@ public class NicknameServiceImpl implements NicknameService {
         }
         nicknameRepository.deleteById(id);
         nick.setUpdatedAt(LocalDateTime.now());
+        log.info(Constants.PROCESSED_MESSAGE, Action.DELETE, id);
         return nicknameMapper.toViewModel(nick);
     }
 

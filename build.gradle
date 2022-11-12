@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.eden'
-version = '0.0.2'
+version = '0.0.3'
 //noinspection GroovyUnusedAssignment
 sourceCompatibility = '17'
 
@@ -39,17 +39,20 @@ file("versions.properties").withReader {
 dependencies {
     implementation "com.eden:common-libs:${versions.common}"
     implementation "com.eden:common-data:${versions.common}"
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
     implementation "org.mapstruct:mapstruct:${versions.mapstruct}"
     implementation "org.jsoup:jsoup:${versions.jsoup}"
 
+    implementation "com.fasterxml.jackson.core:jackson-core:${versions.jackson}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${versions.jackson}"
 
     compileOnly 'org.projectlombok:lombok'
 
-    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     runtimeOnly 'org.postgresql:postgresql'
 
     annotationProcessor 'org.projectlombok:lombok'
@@ -61,4 +64,8 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+configurations.all {
+    exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
 }

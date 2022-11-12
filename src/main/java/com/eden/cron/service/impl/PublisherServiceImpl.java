@@ -6,8 +6,10 @@ import com.eden.cron.model.Publisher;
 import com.eden.cron.producer.PublisherProducer;
 import com.eden.cron.repository.PublisherRepository;
 import com.eden.cron.service.PublisherService;
+import com.eden.cron.utils.Constants;
 import com.eden.cron.viewmodel.BatchPublisherVM;
 import com.eden.cron.viewmodel.PublisherVM;
+import lombok.extern.log4j.Log4j2;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import java.util.List;
  * Implementation of publisher service.
  */
 @Service
+@Log4j2
 public class PublisherServiceImpl implements PublisherService {
 
     private PublisherRepository publisherRepository;
@@ -39,6 +42,7 @@ public class PublisherServiceImpl implements PublisherService {
         publisher.setCreatedAt(LocalDateTime.now());
         publisher.setUpdatedAt(LocalDateTime.now());
         Publisher created = publisherRepository.save(publisher);
+        log.info(Constants.PROCESSED_MESSAGE, Action.CREATE, request);
         return publisherMapper.toViewModel(created);
     }
 
@@ -93,6 +97,7 @@ public class PublisherServiceImpl implements PublisherService {
         publisherMapper.mapUpdate(exist, publisherMapper.toModel(request));
         exist.setUpdatedAt(LocalDateTime.now());
         Publisher updated = publisherRepository.save(exist);
+        log.info(Constants.PROCESSED_MESSAGE, Action.UPDATE, request);
         return publisherMapper.toViewModel(updated);
     }
 
@@ -119,6 +124,7 @@ public class PublisherServiceImpl implements PublisherService {
         }
         publisherRepository.deleteById(id);
         exist.setUpdatedAt(LocalDateTime.now());
+        log.info(Constants.PROCESSED_MESSAGE, Action.DELETE, id);
         return publisherMapper.toViewModel(exist);
     }
 

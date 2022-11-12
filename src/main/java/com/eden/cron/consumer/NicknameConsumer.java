@@ -45,8 +45,7 @@ public class NicknameConsumer extends BaseConsumer<NicknameVM> {
         log.info(Constants.RECEIVED_MESSAGE, queueMessage);
         UnaryOperator<NicknameVM> function = actionMap.getOrDefault(queueMessage.getAction(), null);
         if (function != null) {
-            NicknameVM processed = function.apply(queueMessage.getMessage());
-            log.info(Constants.PROCESSED_MESSAGE, queueMessage.getAction(), processed);
+            function.apply(queueMessage.getMessage());
         }
     }
 }

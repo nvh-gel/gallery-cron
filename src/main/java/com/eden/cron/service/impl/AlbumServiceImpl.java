@@ -6,6 +6,7 @@ import com.eden.cron.model.Album;
 import com.eden.cron.producer.AlbumProducer;
 import com.eden.cron.repository.AlbumRepository;
 import com.eden.cron.service.AlbumService;
+import com.eden.cron.utils.Constants;
 import com.eden.cron.viewmodel.AlbumVM;
 import lombok.extern.log4j.Log4j2;
 import org.mapstruct.factory.Mappers;
@@ -42,6 +43,7 @@ public class AlbumServiceImpl implements AlbumService {
             album.setCreatedAt(LocalDateTime.now());
             album.setUpdatedAt(LocalDateTime.now());
             Album created = albumRepository.save(album);
+            log.info(Constants.PROCESSED_MESSAGE, Action.CREATE, albumVM);
             return albumMapper.toViewModel(created);
         }
         log.info("album {} already exists.", albumVM.getName());
@@ -92,6 +94,7 @@ public class AlbumServiceImpl implements AlbumService {
         albumMapper.mapUpdate(exist, toUpdate);
         exist.setUpdatedAt(LocalDateTime.now());
         Album updated = albumRepository.save(exist);
+        log.info(Constants.PROCESSED_MESSAGE, Action.UPDATE, albumVM);
         return albumMapper.toViewModel(updated);
     }
 
@@ -117,6 +120,7 @@ public class AlbumServiceImpl implements AlbumService {
         }
         albumRepository.deleteById(id);
         exist.setUpdatedAt(LocalDateTime.now());
+        log.info(Constants.PROCESSED_MESSAGE, Action.DELETE, id);
         return albumMapper.toViewModel(exist);
     }
 

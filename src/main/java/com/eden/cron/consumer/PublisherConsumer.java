@@ -43,8 +43,7 @@ public class PublisherConsumer extends BaseConsumer<PublisherVM> {
         log.info(Constants.RECEIVED_MESSAGE, message);
         UnaryOperator<PublisherVM> function = actionMap.getOrDefault(message.getAction(), null);
         if (function != null) {
-            PublisherVM result = function.apply(message.getMessage());
-            log.info(Constants.PROCESSED_MESSAGE, message.getAction(), result);
+            function.apply(message.getMessage());
         }
     }
 }

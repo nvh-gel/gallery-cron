@@ -6,6 +6,7 @@ import com.eden.cron.model.Model;
 import com.eden.cron.producer.ModelProducer;
 import com.eden.cron.repository.ModelRepository;
 import com.eden.cron.service.ModelService;
+import com.eden.cron.utils.Constants;
 import com.eden.cron.viewmodel.ModelVM;
 import lombok.extern.log4j.Log4j2;
 import org.mapstruct.factory.Mappers;
@@ -44,6 +45,7 @@ public class ModelServiceImpl implements ModelService {
             model.setCreatedAt(LocalDateTime.now());
             model.setUpdatedAt(LocalDateTime.now());
             Model created = modelRepository.save(model);
+            log.info(Constants.PROCESSED_MESSAGE, Action.CREATE, request);
             return modelMapper.toViewModel(created);
         }
         log.info("model {} {} already exist", exist.getName(), exist.getNativeName());
@@ -94,6 +96,7 @@ public class ModelServiceImpl implements ModelService {
         modelMapper.mapUpdate(model, modelMapper.toModel(request));
         model.setUpdatedAt(LocalDateTime.now());
         Model updated = modelRepository.save(model);
+        log.info(Constants.PROCESSED_MESSAGE, Action.UPDATE, request);
         return modelMapper.toViewModel(updated);
     }
 
@@ -110,6 +113,7 @@ public class ModelServiceImpl implements ModelService {
         }
         modelRepository.deleteById(id);
         model.setUpdatedAt(LocalDateTime.now());
+        log.info(Constants.PROCESSED_MESSAGE, Action.DELETE, id);
         return modelMapper.toViewModel(model);
     }
 
